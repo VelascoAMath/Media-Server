@@ -9,11 +9,38 @@ export default function MyVideoPlayer() {
   const videoRef = useRef(null);
 
   let handleKeyEvent = function(event) {
+    console.log(videoRef.current);
     if(event.code == "KeyK"){
         togglePlay();
     } else if (event.code == "KeyM"){
       videoRef.current.muted = !isMuted;
       setIsMuted(!isMuted);
+    } else if (event.code == 'KeyL'){
+      videoRef.current.currentTime += 10;
+      console.log(videoRef.current.currentTime);
+    } else if (event.code == 'KeyJ'){
+      videoRef.current.currentTime -= 10;
+      console.log(videoRef.current.currentTime);
+    } else if (event.code == 'Digit1'){
+      videoRef.current.currentTime = 0.1 * videoRef.current.duration;
+    } else if (event.code == 'Digit2'){
+      videoRef.current.currentTime = 0.2 * videoRef.current.duration;
+    } else if (event.code == 'Digit3'){
+      videoRef.current.currentTime = 0.3 * videoRef.current.duration;
+    } else if (event.code == 'Digit4'){
+      videoRef.current.currentTime = 0.4 * videoRef.current.duration;
+    } else if (event.code == 'Digit5'){
+      videoRef.current.currentTime = 0.5 * videoRef.current.duration;
+    } else if (event.code == 'Digit6'){
+      videoRef.current.currentTime = 0.6 * videoRef.current.duration;
+    } else if (event.code == 'Digit7'){
+      videoRef.current.currentTime = 0.7 * videoRef.current.duration;
+    } else if (event.code == 'Digit8'){
+      videoRef.current.currentTime = 0.8 * videoRef.current.duration;
+    } else if (event.code == 'Digit9'){
+      videoRef.current.currentTime = 0.9 * videoRef.current.duration;
+    } else if (event.code == 'Digit0'){
+      videoRef.current.currentTime = 0.0 * videoRef.current.duration;
     }
      else {
       console.log(event.code);
