@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+<body onkeydown="handlePlayPause">
+
+    <h1>
+        Welcome to the Velasco Media Server
+    </h1>
+
+
+    <div class="video-container">
+        <div class="video-controls-container">
+            <div class="timeline-container"></div>
+            <div class="controls">
+                <button class="play-pause-btn">
+                    Play
+                </button>
+            </div>
+        </div>
+        <video preload="auto" id="currentVid" src="media/test.mp4"></video>
+    </div>
+
+    <script type="module" src="index.js"/>
+    <script src="https://unpkl.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkl.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+</body>
+
+
+</html>
