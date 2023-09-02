@@ -16,9 +16,11 @@ export default function MyVideoPlayer() {
       setIsMuted(!isMuted);
     } else if (event.code == 'KeyL' || event.code == "ArrowRight"){
       videoRef.current.currentTime += 10;
+      videoRef.current.currentTime = Math.min(videoRef.current.currentTime, videoRef.current.duration);
       console.log(videoRef.current.currentTime);
     } else if (event.code == 'KeyJ' || event.code == "ArrowLeft"){
       videoRef.current.currentTime -= 10;
+      videoRef.current.currentTime = Math.max(videoRef.current.currentTime, 0);
       console.log(videoRef.current.currentTime);
     } else if (event.code == 'Digit1'){
       videoRef.current.currentTime = 0.1 * videoRef.current.duration;
