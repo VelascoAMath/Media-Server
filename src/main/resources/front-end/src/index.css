@@ -37,6 +37,8 @@ video {
 
 .videoProgress {
   background-color: red;
+  height: 5px;
+  border-radius: 5px;
 }
 
 code {
