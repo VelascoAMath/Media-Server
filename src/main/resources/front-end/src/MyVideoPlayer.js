@@ -9,16 +9,15 @@ export default function MyVideoPlayer() {
   const videoRef = useRef(null);
 
   let handleKeyEvent = function(event) {
-    console.log(videoRef.current);
-    if(event.code == "KeyK"){
+    if(event.code == "KeyK" || event.code == "Space"){
         togglePlay();
     } else if (event.code == "KeyM"){
       videoRef.current.muted = !isMuted;
       setIsMuted(!isMuted);
-    } else if (event.code == 'KeyL'){
+    } else if (event.code == 'KeyL' || event.code == "ArrowRight"){
       videoRef.current.currentTime += 10;
       console.log(videoRef.current.currentTime);
-    } else if (event.code == 'KeyJ'){
+    } else if (event.code == 'KeyJ' || event.code == "ArrowLeft"){
       videoRef.current.currentTime -= 10;
       console.log(videoRef.current.currentTime);
     } else if (event.code == 'Digit1'){
