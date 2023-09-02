@@ -6,7 +6,9 @@ export default function MyVideoPlayer() {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
   const videoRef = useRef(null);
+  let progressPercentage = 0;
 
   let handleKeyEvent = function(event) {
     if(event.code == "KeyK" || event.code == "Space"){
