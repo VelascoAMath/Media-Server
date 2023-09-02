@@ -57,6 +57,9 @@ export default function MyVideoPlayer() {
     setIsPlaying(!isPlaying);
   }
 
+  let toggleMute = function() {
+    setIsMuted(!isMuted);
+  }
 
   return (
     <video src="http://localhost:63342/Media-Server/src/main/resources/static/media/test.mp4" 
