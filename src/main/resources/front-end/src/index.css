@@ -1,3 +1,14 @@
+:root {
+  --background-color: #219ebc;
+  --div-background-color: #8ecae6;
+  --text-color: #023047;
+}
+
+h1 {
+  background-color: var(--div-background-color);
+  color: var(--text-color);
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +16,27 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color:var(--background-color);
+}
+
+
+video {
+  pointer-events: none;
+  width: 100%;
+  position: relative;
+}
+
+.control-element {
+  z-index: 1;
+}
+
+.videoContainer {
+  background-color: white;
+  width: 50%;
+}
+
+.videoProgress {
+  background-color: red;
 }
 
 code {
