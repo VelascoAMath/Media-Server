@@ -61,6 +61,15 @@ export default function MyVideoPlayer() {
     setIsMuted(!isMuted);
   }
 
+  if(videoRef.current){
+    videoRef.current.addEventListener("play", (event) => {setIsPlaying(true)} )
+    videoRef.current.addEventListener("playing", (event) => {setIsPlaying(true)} )
+    videoRef.current.addEventListener("pause", (event) => {setIsPlaying(false)} )
+    videoRef.current.addEventListener("timeupdate", (event) => {setCurrentTime(videoRef.current.currentTime)} )
+    progressPercentage = currentTime / videoRef.current.duration * 100;
+  }
+
+
   return (
     <video src="http://localhost:63342/Media-Server/src/main/resources/static/media/test.mp4" 
     controls={false} playing={isPlaying? "true": "false"}
