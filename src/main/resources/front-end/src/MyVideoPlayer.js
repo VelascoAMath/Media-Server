@@ -1,5 +1,6 @@
 import React, { Component, useRef } from 'react';
 import { useState } from 'react';
+import { PauseBtnFill, PlayBtnFill, VolumeDownFill, VolumeMuteFill, VolumeUpFill } from 'react-bootstrap-icons';
 import ReactPlayer from 'react-player';
 
 export default function MyVideoPlayer() {
@@ -73,8 +74,23 @@ export default function MyVideoPlayer() {
 
 
   return (
-    <video src="http://localhost:63342/Media-Server/src/main/resources/static/media/test.mp4" 
-    controls={false} playing={isPlaying? "true": "false"}
-     onClick={togglePlay} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"} ref={videoRef}></video>
+    <div className='videoContainer' onKeyDown={(event) => {event.preventDefault(); handleKeyEvent(event)}} tabIndex={"0"}>
+      <div>
+        <video src="http://localhost:8080/media/test.mp4" 
+        playing={isPlaying.toString()}
+        onClick={togglePlay} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"} ref={videoRef}></video>
+      </div>
+      <div className="row">
+        {!isPlaying && <PlayBtnFill onClick={togglePlay} className="col-sm"></PlayBtnFill>}
+        {isPlaying && <PauseBtnFill onClick={togglePlay} className="col-sm"></PauseBtnFill>}
+        {videoRef.current && isMuted && <VolumeMuteFill onClick={toggleMute} className="col-sm control-element"></VolumeMuteFill>}
+        {videoRef.current && !isMuted && videoRef.current.volume > 0.5 && <VolumeUpFill onClick={toggleMute} className="col-sm control-element"></VolumeUpFill>}
+        {videoRef.current && !isMuted && videoRef.current.volume <= 0.5 && <VolumeDownFill onClick={toggleMute} className="col-sm control-element"></VolumeDownFill>}
+        {currentTime}
+        <div className='videoProgress' style={{width: progressPercentage.toString() + "%" }}>
+            {progressPercentage.toString() + "%"}
+        </div>
+      </div>
+    </div>
   );
 }
