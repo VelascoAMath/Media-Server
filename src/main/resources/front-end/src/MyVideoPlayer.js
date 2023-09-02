@@ -1,6 +1,6 @@
 import React, { Component, useRef } from 'react';
 import { useState } from 'react';
-import { PauseBtnFill, PlayBtnFill, VolumeDownFill, VolumeMuteFill, VolumeUpFill } from 'react-bootstrap-icons';
+import { PauseBtnFill, PlayBtnFill, VolumeDownFill, VolumeMuteFill, VolumeOffFill, VolumeUpFill } from 'react-bootstrap-icons';
 import ReactPlayer from 'react-player';
 
 export default function MyVideoPlayer() {
@@ -8,6 +8,7 @@ export default function MyVideoPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [volume, setVolume] = useState(1);
   const videoRef = useRef(null);
   let progressPercentage = 0;
 
@@ -45,8 +46,23 @@ export default function MyVideoPlayer() {
       videoRef.current.currentTime = 0.9 * videoRef.current.duration;
     } else if (event.code == 'Digit0'){
       videoRef.current.currentTime = 0.0 * videoRef.current.duration;
+    } else if (event.code == 'ArrowUp') {
+      console.log(videoRef.current.volume);
+      if(videoRef.current.volume + 0.1 > 1){
+        videoRef.current.volume = 0.9;
+      }
+      videoRef.current.volume += 0.1;
+      setVolume(videoRef.current.volume);
     }
-     else {
+    else if (event.code == 'ArrowDown') {
+      console.log(videoRef.current.volume);
+      if(videoRef.current.volume - 0.1 < 0){
+        videoRef.current.volume = 0.1;
+      }
+      videoRef.current.volume -= 0.1;
+      setVolume(videoRef.current.volume);
+    }
+   else {
       console.log(event.code);
     }
   }
@@ -84,8 +100,9 @@ export default function MyVideoPlayer() {
         {!isPlaying && <PlayBtnFill onClick={togglePlay} className="col-sm"></PlayBtnFill>}
         {isPlaying && <PauseBtnFill onClick={togglePlay} className="col-sm"></PauseBtnFill>}
         {videoRef.current && isMuted && <VolumeMuteFill onClick={toggleMute} className="col-sm control-element"></VolumeMuteFill>}
-        {videoRef.current && !isMuted && videoRef.current.volume > 0.5 && <VolumeUpFill onClick={toggleMute} className="col-sm control-element"></VolumeUpFill>}
-        {videoRef.current && !isMuted && videoRef.current.volume <= 0.5 && <VolumeDownFill onClick={toggleMute} className="col-sm control-element"></VolumeDownFill>}
+        {videoRef.current && !isMuted && volume > 0.5 && <VolumeUpFill onClick={toggleMute} className="col-sm control-element"></VolumeUpFill>}
+        {videoRef.current && !isMuted && 0 < volume && volume <= 0.5 && <VolumeDownFill onClick={toggleMute} className="col-sm control-element"></VolumeDownFill>}
+        {videoRef.current && !isMuted && volume < 0.1 && <VolumeOffFill onClick={toggleMute} className="col-sm control-element"></VolumeOffFill>}
         {currentTime}
         <div className='videoProgress' style={{width: progressPercentage.toString() + "%" }}>
             {progressPercentage.toString() + "%"}
