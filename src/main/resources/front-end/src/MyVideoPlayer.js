@@ -1,7 +1,7 @@
 import React, { Component, useRef } from 'react';
 import { useState } from 'react';
 import { PauseBtnFill, PlayBtnFill, VolumeDownFill, VolumeMuteFill, VolumeOffFill, VolumeUpFill } from 'react-bootstrap-icons';
-import ReactPlayer from 'react-player';
+import { sprintf } from 'sprintf-js';
 
 export default function MyVideoPlayer() {
 
@@ -80,6 +80,18 @@ export default function MyVideoPlayer() {
     setIsMuted(!isMuted);
   }
 
+  let formatStringAsTime = function(time) {
+    console.log(time);
+    if(time > 3600){
+      return sprintf("%02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60);
+    } else if (time > 60){
+      return sprintf("%02d:%02d", time / 60, time % 60);
+    } 
+    else {
+      return sprintf("00:%02d", time);
+    }
+  }
+
   if(videoRef.current){
     videoRef.current.addEventListener("play", (event) => {setIsPlaying(true)} )
     videoRef.current.addEventListener("playing", (event) => {setIsPlaying(true)} )
@@ -96,6 +108,10 @@ export default function MyVideoPlayer() {
         playing={isPlaying.toString()}
         onClick={togglePlay} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"} ref={videoRef}></video>
       </div>
+      <div>
+        <div className='videoProgress' style={{width: progressPercentage.toString() + "%" }}>
+        </div>
+      </div>
       <div className="row">
         {!isPlaying && <PlayBtnFill onClick={togglePlay} className="col-sm"></PlayBtnFill>}
         {isPlaying && <PauseBtnFill onClick={togglePlay} className="col-sm"></PauseBtnFill>}
@@ -103,10 +119,8 @@ export default function MyVideoPlayer() {
         {videoRef.current && !isMuted && volume > 0.5 && <VolumeUpFill onClick={toggleMute} className="col-sm control-element"></VolumeUpFill>}
         {videoRef.current && !isMuted && 0 < volume && volume <= 0.5 && <VolumeDownFill onClick={toggleMute} className="col-sm control-element"></VolumeDownFill>}
         {videoRef.current && !isMuted && volume < 0.1 && <VolumeOffFill onClick={toggleMute} className="col-sm control-element"></VolumeOffFill>}
-        {currentTime}
-        <div className='videoProgress' style={{width: progressPercentage.toString() + "%" }}>
-            {progressPercentage.toString() + "%"}
-        </div>
+        {videoRef.current && (formatStringAsTime(currentTime) + "/" + formatStringAsTime(videoRef.current.duration))}
+     
       </div>
     </div>
   );
