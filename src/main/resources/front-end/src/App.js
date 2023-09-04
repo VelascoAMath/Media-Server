@@ -21,10 +21,10 @@ function App() {
   // }
 
   return (
-    <div>
+    <>
       <h1>Welcome to the Velasco Media Server</h1>
       <MyVideoPlayer src="http://localhost:63342/Media-Server/src/main/resources/static/media/test.mp4"></MyVideoPlayer>
-    </div>
+    </>
   );
 }
 
