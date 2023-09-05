@@ -20,7 +20,11 @@ export default function MyVideoPlayer() {
   const handle = useFullScreenHandle();
 
   let handleKeyEvent = function(event) {
-    if(event.code == "KeyK" || event.code == "Space"){
+    if(event.code == "KeyF"){
+      toggleFullScreen();
+    } else if (event.code == "KeyT"){
+      toggleTheater();
+    } else if(event.code == "KeyK" || event.code == "Space"){
         togglePlay();
     } else if (event.code == "KeyM"){
       videoRef.current.muted = !isMuted;
@@ -88,12 +92,21 @@ export default function MyVideoPlayer() {
   }
 
   let toggleFullScreen = function() {
+    if(!isFullScreen){
+      handle.enter();
+    } else {
+      handle.exit();
+    }
     setIsFullScreen(!isFullScreen);
     setIsMini(false);
     setIsTheater(false);
   }
 
   let toggleTheater = function() {
+    if(!isFullScreen){
+    } else {
+      handle.exit();
+    }
     setIsFullScreen(false);
     setIsMini(false);
     setIsTheater(!isTheater);
@@ -106,7 +119,6 @@ export default function MyVideoPlayer() {
   }
 
   let formatStringAsTime = function(time) {
-    console.log(time);
     if(time > 3600){
       return sprintf("%02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60);
     } else if (time > 60){
@@ -126,27 +138,29 @@ export default function MyVideoPlayer() {
   }
 
   return (
-    <div className={'video-container' + (isTheater ? ".theater": "") + (isFullScreen ? ".full-screen": "")} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"}>
-      <div className="video-controls-container">
-        <div className='videoProgress' style={{width: progressPercentage.toString() + "%" }}></div>
-        <div className='progressPosition' ><Hexagon style={{paddingLeft: progressPercentage.toString() + "%" }} ></Hexagon></div>
-        <div className="controls">
-          {!isPlaying && <PlayBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PlayBtnFill>}
-          {isPlaying && <PauseBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PauseBtnFill>}
-          {videoRef.current && isMuted && <VolumeMuteFill onClick={toggleMute} className="col-sm control-element"></VolumeMuteFill>}
-          {videoRef.current && !isMuted && volume > 0.5 && <VolumeUpFill onClick={toggleMute} className="col-sm control-element"></VolumeUpFill>}
-          {videoRef.current && !isMuted && 0 < volume && volume <= 0.5 && <VolumeDownFill onClick={toggleMute} className="col-sm control-element"></VolumeDownFill>}
-          {videoRef.current && !isMuted && volume < 0.1 && <VolumeOffFill onClick={toggleMute} className="col-sm control-element"></VolumeOffFill>}
-          {videoRef.current && (formatStringAsTime(currentTime) + "/" + formatStringAsTime(videoRef.current.duration))}
-          {!isFullScreen && <Pip onClick={toggleMini}></Pip>}
-          {!isFullScreen && <Film onClick={toggleTheater}></Film>}
-          {!isFullScreen && <Fullscreen onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></Fullscreen>}
-          {isFullScreen && <FullscreenExit onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></FullscreenExit>}
+    <FullScreenPanel handle={handle}>
+      <div className={'video-container' + (isTheater ? ".theater": "") + (isFullScreen ? ".full-screen": "")} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"}>
+        <div className="video-controls-container">
+          <div className='videoProgress' style={{width: progressPercentage.toString() + "%" }}></div>
+          <div className='progressPosition' ><Hexagon style={{paddingLeft: progressPercentage.toString() + "%" }} ></Hexagon></div>
+          <div className="controls">
+            {!isPlaying && <PlayBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PlayBtnFill>}
+            {isPlaying && <PauseBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PauseBtnFill>}
+            {videoRef.current && isMuted && <VolumeMuteFill onClick={toggleMute} className="col-sm control-element"></VolumeMuteFill>}
+            {videoRef.current && !isMuted && volume > 0.5 && <VolumeUpFill onClick={toggleMute} className="col-sm control-element"></VolumeUpFill>}
+            {videoRef.current && !isMuted && 0 < volume && volume <= 0.5 && <VolumeDownFill onClick={toggleMute} className="col-sm control-element"></VolumeDownFill>}
+            {videoRef.current && !isMuted && volume < 0.1 && <VolumeOffFill onClick={toggleMute} className="col-sm control-element"></VolumeOffFill>}
+            {videoRef.current && (formatStringAsTime(currentTime) + "/" + formatStringAsTime(videoRef.current.duration))}
+            {!isFullScreen && <Pip onClick={toggleMini}></Pip>}
+            {!isFullScreen && <Film onClick={toggleTheater}></Film>}
+            {!isFullScreen && <Fullscreen onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></Fullscreen>}
+            {isFullScreen && <FullscreenExit onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></FullscreenExit>}
+          </div>
         </div>
+        <video src="http://localhost:8080/media/test.mp4" 
+        playing={isPlaying.toString()}
+        onClick={togglePlay} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"} ref={videoRef}></video>
       </div>
-      <video src="http://localhost:8080/media/test.mp4" 
-      playing={isPlaying.toString()}
-      onClick={togglePlay} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"} ref={videoRef}></video>
-    </div>
+    </FullScreenPanel>
   );
 }
