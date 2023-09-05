@@ -1,17 +1,23 @@
 import React, { Component, useRef } from 'react';
 import { useState } from 'react';
-import { Fullscreen, FullscreenExit, Hexagon, HexagonFill, PauseBtnFill, PlayBtnFill, RecordFill, VolumeDownFill, VolumeMuteFill, VolumeOffFill, VolumeUpFill } from 'react-bootstrap-icons';
+import { Film, Fullscreen, FullscreenExit, Hexagon, HexagonFill, PauseBtnFill, Pip, PlayBtnFill, RecordFill, VolumeDownFill, VolumeMuteFill, VolumeOffFill, VolumeUpFill } from 'react-bootstrap-icons';
 import { sprintf } from 'sprintf-js';
+import { useFullScreenHandle } from "react-full-screen";
+import { FullScreen as FullScreenPanel } from "react-full-screen";
+
 
 export default function MyVideoPlayer() {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isTheater, setIsTheater] = useState(false);
+  const [isMini, setIsMini] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(1);
   const videoRef = useRef(null);
   let progressPercentage = 0;
+  const handle = useFullScreenHandle();
 
   let handleKeyEvent = function(event) {
     if(event.code == "KeyK" || event.code == "Space"){
@@ -82,7 +88,26 @@ export default function MyVideoPlayer() {
   }
 
   let toggleFullScreen = function() {
+    if(isFullScreen){
+      document.exitFullscreen().then(() => {});
+    } else {
+      
+    }
     setIsFullScreen(!isFullScreen);
+    setIsMini(false);
+    setIsTheater(false);
+  }
+
+  let toggleTheater = function() {
+    setIsFullScreen(false);
+    setIsMini(false);
+    setIsTheater(!isTheater);
+  }
+
+  let toggleMini = function() {
+    setIsFullScreen(false);
+    setIsMini(true);
+    setIsTheater(false);
   }
 
   let formatStringAsTime = function(time) {
@@ -106,7 +131,7 @@ export default function MyVideoPlayer() {
   }
 
   return (
-    <div className='video-container' onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"}>
+    <div className={'video-container' + (isTheater ? ".theater": "") + (isFullScreen ? ".full-screen": "")} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"}>
       <div className="video-controls-container">
         <div className='videoProgress' style={{width: progressPercentage.toString() + "%" }}></div>
         <div className='progressPosition' ><Hexagon style={{paddingLeft: progressPercentage.toString() + "%" }} ></Hexagon></div>
@@ -118,6 +143,8 @@ export default function MyVideoPlayer() {
           {videoRef.current && !isMuted && 0 < volume && volume <= 0.5 && <VolumeDownFill onClick={toggleMute} className="col-sm control-element"></VolumeDownFill>}
           {videoRef.current && !isMuted && volume < 0.1 && <VolumeOffFill onClick={toggleMute} className="col-sm control-element"></VolumeOffFill>}
           {videoRef.current && (formatStringAsTime(currentTime) + "/" + formatStringAsTime(videoRef.current.duration))}
+          {!isFullScreen && <Pip onClick={toggleMini}></Pip>}
+          {!isFullScreen && <Film onClick={toggleTheater}></Film>}
           {!isFullScreen && <Fullscreen onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></Fullscreen>}
           {isFullScreen && <FullscreenExit onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></FullscreenExit>}
         </div>

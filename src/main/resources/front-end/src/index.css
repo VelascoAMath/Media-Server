@@ -49,13 +49,14 @@ video {
   max-width: initial;
   width: 100%;
 }
-  .video-container.theater {
+
+.video-container.theater {
   max-height: 90vh;
 }
 
 
 .video-container.full-screen {
-  max-height: 100vh;
+  height: 100vh;
 }
 
 .video-controls-container {
