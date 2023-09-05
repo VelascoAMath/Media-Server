@@ -88,11 +88,6 @@ export default function MyVideoPlayer() {
   }
 
   let toggleFullScreen = function() {
-    if(isFullScreen){
-      document.exitFullscreen().then(() => {});
-    } else {
-      
-    }
     setIsFullScreen(!isFullScreen);
     setIsMini(false);
     setIsTheater(false);
