@@ -82,7 +82,6 @@ video {
 }
 
 .video-container:hover .video-controls-container,
-.video-container:focus-within .video-controls-container,
 .video-container.paused .video-controls-container {
   opacity: 1;
 }
