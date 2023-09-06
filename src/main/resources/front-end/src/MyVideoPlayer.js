@@ -145,7 +145,7 @@ export default function MyVideoPlayer() {
         onClick={togglePlay} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"} ref={videoRef}></video>
         <div className={"video-controls-container" + (isTheater? "-theater": "")}>
           <div className='videoProgress' style={{width: progressPercentage.toString() + "%" }}></div>
-          <div className='progressPosition' ><Hexagon style={{paddingLeft: progressPercentage.toString() + "%" }} ></Hexagon></div>
+          <div className='progressPosition'  style={{marginLeft: progressPercentage.toString() + "%", top:0 }} ><Hexagon></Hexagon></div>
           <div className="controls">
             {!isPlaying && <PlayBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PlayBtnFill>}
             {isPlaying && <PauseBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PauseBtnFill>}

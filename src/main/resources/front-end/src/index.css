@@ -124,7 +124,7 @@ video {
 
 
 .progressPosition {
-  position: relative;
+  color: white;
   z-index: 2;
 }
 code {
