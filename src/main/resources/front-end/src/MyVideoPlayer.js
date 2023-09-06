@@ -88,6 +88,7 @@ export default function MyVideoPlayer() {
   }
 
   let toggleMute = function() {
+    videoRef.current.muted = !isMuted;
     setIsMuted(!isMuted);
   }
 
