@@ -139,8 +139,11 @@ export default function MyVideoPlayer() {
 
   return (
     <FullScreenPanel handle={handle}>
-      <div className={'video-container' + (isTheater ? ".theater": "") + (isFullScreen ? ".full-screen": "")} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"}>
-        <div className="video-controls-container">
+      <div className={'video-container' + (isTheater ? "-theater": "") + (isFullScreen ? "-full-screen": "")} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"}>
+        <video src="http://localhost:8080/media/test.mp4" 
+        playing={isPlaying.toString()}
+        onClick={togglePlay} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"} ref={videoRef}></video>
+        <div className={"video-controls-container" + (isTheater? "-theater": "")}>
           <div className='videoProgress' style={{width: progressPercentage.toString() + "%" }}></div>
           <div className='progressPosition' ><Hexagon style={{paddingLeft: progressPercentage.toString() + "%" }} ></Hexagon></div>
           <div className="controls">
@@ -157,9 +160,6 @@ export default function MyVideoPlayer() {
             {isFullScreen && <FullscreenExit onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></FullscreenExit>}
           </div>
         </div>
-        <video src="http://localhost:8080/media/test.mp4" 
-        playing={isPlaying.toString()}
-        onClick={togglePlay} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"} ref={videoRef}></video>
       </div>
     </FullScreenPanel>
   );
