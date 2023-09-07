@@ -168,7 +168,8 @@ export default function MyVideoPlayer() {
             {videoRef.current && !isMuted && 0 < volume && volume <= 0.5 && <VolumeDownFill onClick={toggleMute} className="col-sm control-element"></VolumeDownFill>}
             {videoRef.current && !isMuted && volume < 0.1 && <VolumeOffFill onClick={toggleMute} className="col-sm control-element"></VolumeOffFill>}
             {videoRef.current && (formatStringAsTime(currentTime) + "/" + formatStringAsTime(videoRef.current.duration))}
-            {!isFullScreen && <Pip onClick={toggleMini}></Pip>}
+            {/* {!isFullScreen && <Pip onClick={toggleMini}></Pip>} */}
+            <div className='infinite-middle'></div>
             {!isFullScreen && <Film onClick={toggleTheater}></Film>}
             {!isFullScreen && <Fullscreen onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></Fullscreen>}
             {isFullScreen && <FullscreenExit onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></FullscreenExit>}
