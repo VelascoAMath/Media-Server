@@ -1,6 +1,6 @@
-import React, { Component, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useState } from 'react';
-import { Film, Fullscreen, FullscreenExit, Hexagon, HexagonFill, PauseBtnFill, Pip, PlayBtnFill, RecordFill, VolumeDownFill, VolumeMuteFill, VolumeOffFill, VolumeUpFill } from 'react-bootstrap-icons';
+import { Film, Fullscreen, FullscreenExit, PauseBtnFill, Pip, PlayBtnFill, VolumeDownFill, VolumeMuteFill, VolumeOffFill, VolumeUpFill } from 'react-bootstrap-icons';
 import { sprintf } from 'sprintf-js';
 import { useFullScreenHandle } from "react-full-screen";
 import { FullScreen as FullScreenPanel } from "react-full-screen";
@@ -16,8 +16,10 @@ export default function MyVideoPlayer() {
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(1);
   const videoRef = useRef(null);
+  const controlRef = useRef(null);
   let progressPercentage = 0;
   const handle = useFullScreenHandle();
+  let mouseX = -1;
 
   let handleKeyEvent = function(event) {
     if(event.code == "KeyF"){
@@ -76,6 +78,16 @@ export default function MyVideoPlayer() {
    else {
       console.log(event.code);
     }
+  }
+
+  let handleMouse = function(event) {
+    const rect = controlRef.current.getBoundingClientRect();
+    console.log(rect);
+
+    console.log( 100 * (event.clientX - rect.x) / rect.width);
+
+    setCurrentTime((event.clientX - rect.x) / rect.width * videoRef.current.duration )
+    videoRef.current.currentTime = (event.clientX - rect.x) / rect.width * videoRef.current.duration
   }
 
   let togglePlay = function() {
@@ -144,9 +156,10 @@ export default function MyVideoPlayer() {
         <video src="http://localhost:8080/media/test.mp4" 
         playing={isPlaying.toString()}
         onClick={togglePlay} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"} ref={videoRef}></video>
-        <div className={"video-controls-container" + (isTheater? "-theater": "")}>
+        <div className={"video-controls-container" + (isTheater? "-theater": "")} ref={controlRef}>
+          <div className='videoProgressBackground' onMouseUp={handleMouse}></div>
           <div className='videoProgress' style={{width: progressPercentage.toString() + "%" }}></div>
-          <div className='progressPosition'  style={{marginLeft: progressPercentage.toString() + "%", top:0 }} ><Hexagon></Hexagon></div>
+          <div className='progressPosition' style={{marginLeft: "calc(" + progressPercentage.toString() + "% - 7px)" } } ></div>
           <div className="controls">
             {!isPlaying && <PlayBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PlayBtnFill>}
             {isPlaying && <PauseBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PauseBtnFill>}
