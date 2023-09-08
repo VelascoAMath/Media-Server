@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useState } from 'react';
-import { Film, Fullscreen, FullscreenExit, PauseBtnFill, Pip, PlayBtnFill, VolumeDownFill, VolumeMuteFill, VolumeOffFill, VolumeUpFill } from 'react-bootstrap-icons';
+import { Film, Fullscreen, FullscreenExit, PauseBtnFill, Pip, PlayBtnFill, Repeat, VolumeDownFill, VolumeMuteFill, VolumeOffFill, VolumeUpFill } from 'react-bootstrap-icons';
 import { sprintf } from 'sprintf-js';
 import { useFullScreenHandle } from "react-full-screen";
 import { FullScreen as FullScreenPanel } from "react-full-screen";
@@ -15,6 +15,7 @@ export default function MyVideoPlayer() {
   const [isMini, setIsMini] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(1);
+  const [willLoop, setWillLoop] = useState(false);
   const videoRef = useRef(null);
   const controlRef = useRef(null);
   let progressPercentage = 0;
@@ -131,6 +132,10 @@ export default function MyVideoPlayer() {
     setIsTheater(false);
   }
 
+  let toggleLoop = function() {
+    setWillLoop(!willLoop);
+    videoRef.current.loop = !willLoop;
+  }
   let formatStringAsTime = function(time) {
     if(time > 3600){
       return sprintf("%02d:%02d:%02d", time / 3600, (time % 3600) / 60, time % 60);
@@ -170,6 +175,8 @@ export default function MyVideoPlayer() {
             {videoRef.current && (formatStringAsTime(currentTime) + "/" + formatStringAsTime(videoRef.current.duration))}
             {/* {!isFullScreen && <Pip onClick={toggleMini}></Pip>} */}
             <div className='infinite-middle'></div>
+            {!willLoop && <Repeat onClick={toggleLoop}></Repeat>}
+            {willLoop && <Repeat onClick={toggleLoop} style={{backgroundColor: "white"}}></Repeat>}
             {!isFullScreen && <Film onClick={toggleTheater}></Film>}
             {!isFullScreen && <Fullscreen onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></Fullscreen>}
             {isFullScreen && <FullscreenExit onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></FullscreenExit>}
