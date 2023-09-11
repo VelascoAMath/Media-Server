@@ -14,6 +14,7 @@ export default function MyVideoPlayer() {
   const [isTheater, setIsTheater] = useState(false);
   const [isMini, setIsMini] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [showVolume, setShowVolume] = useState(false);
   const [volume, setVolume] = useState(1);
   const [willLoop, setWillLoop] = useState(false);
   const videoRef = useRef(null);
@@ -21,14 +22,14 @@ export default function MyVideoPlayer() {
   let progressPercentage = 0;
   const handle = useFullScreenHandle();
   let mouseX = -1;
-
+  
   let handleKeyEvent = function(event) {
     if(event.code == "KeyF"){
       toggleFullScreen();
     } else if (event.code == "KeyT"){
       toggleTheater();
     } else if(event.code == "KeyK" || event.code == "Space"){
-        togglePlay();
+      togglePlay();
     } else if (event.code == "KeyM"){
       videoRef.current.muted = !isMuted;
       setIsMuted(!isMuted);
@@ -76,35 +77,35 @@ export default function MyVideoPlayer() {
       videoRef.current.volume -= 0.1;
       setVolume(videoRef.current.volume);
     }
-   else {
+    else {
       console.log(event.code);
     }
   }
-
+  
   let handleMouse = function(event) {
     const rect = controlRef.current.getBoundingClientRect();
     console.log(rect);
-
+    
     console.log( 100 * (event.clientX - rect.x) / rect.width);
-
+    
     setCurrentTime((event.clientX - rect.x) / rect.width * videoRef.current.duration )
     videoRef.current.currentTime = (event.clientX - rect.x) / rect.width * videoRef.current.duration
   }
-
+  
   let togglePlay = function() {
     if(isPlaying){
-    videoRef.current.pause();
+      videoRef.current.pause();
     } else {
       videoRef.current.play();
     }
     setIsPlaying(!isPlaying);
   }
-
+  
   let toggleMute = function() {
     videoRef.current.muted = !isMuted;
     setIsMuted(!isMuted);
   }
-
+  
   let toggleFullScreen = function() {
     if(!isFullScreen){
       handle.enter();
@@ -115,7 +116,7 @@ export default function MyVideoPlayer() {
     setIsMini(false);
     setIsTheater(false);
   }
-
+  
   let toggleTheater = function() {
     if(!isFullScreen){
     } else {
@@ -125,13 +126,13 @@ export default function MyVideoPlayer() {
     setIsMini(false);
     setIsTheater(!isTheater);
   }
-
+  
   let toggleMini = function() {
     setIsFullScreen(false);
     setIsMini(true);
     setIsTheater(false);
   }
-
+  
   let toggleLoop = function() {
     setWillLoop(!willLoop);
     videoRef.current.loop = !willLoop;
@@ -154,33 +155,40 @@ export default function MyVideoPlayer() {
     videoRef.current.addEventListener("timeupdate", (event) => {setCurrentTime(videoRef.current.currentTime)} )
     progressPercentage = currentTime / videoRef.current.duration * 100;
   }
+  const getControls = function(){
+    return <div className="controls">
+      {!isPlaying && <PlayBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PlayBtnFill>}
+      {isPlaying && <PauseBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PauseBtnFill>}
+      <div className="volume-container" onMouseOver={() => {console.log("OVER")}}>
+        {isMuted && <VolumeMuteFill onClick={toggleMute} className="col-sm control-element"></VolumeMuteFill>}
+        {!isMuted && volume > 0.5 && <VolumeUpFill onClick={toggleMute} className="col-sm control-element"></VolumeUpFill>}
+        {!isMuted && 0.1 < volume && volume <= 0.5 && <VolumeDownFill onClick={toggleMute} className="col-sm control-element"></VolumeDownFill>}
+        {!isMuted && volume < 0.1 && <VolumeOffFill onClick={toggleMute} className="col-sm control-element"></VolumeOffFill>}
+        {<input type="range" min="0" max="1" step="0.01" className='volume-slider'></input>}
+      </div>
+      {formatStringAsTime(currentTime) + "/" + formatStringAsTime(videoRef.current.duration)}
+      {/* {!isFullScreen && <Pip onClick={toggleMini}></Pip>} */}
+      <div className='infinite-middle'></div>
+      {!willLoop && <Repeat onClick={toggleLoop}></Repeat>}
+      {willLoop && <Repeat onClick={toggleLoop} style={{backgroundColor: "white"}}></Repeat>}
+      {!isFullScreen && <Film onClick={toggleTheater}></Film>}
+      {!isFullScreen && <Fullscreen onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></Fullscreen>}
+      {isFullScreen && <FullscreenExit onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></FullscreenExit>}
+    </div>
+  }
+  
 
   return (
     <FullScreenPanel handle={handle}>
       <div className={'video-container' + (isTheater ? "-theater": "") + (isFullScreen ? "-full-screen": "")} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"}>
-        <video src="http://localhost:8080/media/test.mp4" 
+        <video src="http://localhost:8080/media/How To Create The YouTube Video Player.mkv"
         playing={isPlaying.toString()}
         onClick={togglePlay} onKeyDown={(event) => {handleKeyEvent(event)}} tabIndex={"0"} ref={videoRef}></video>
         <div className={"video-controls-container" + (isTheater? "-theater": "")} ref={controlRef}>
           <div className='videoProgressBackground' onMouseUp={handleMouse}></div>
           <div className='videoProgress' style={{width: progressPercentage.toString() + "%" }}></div>
           <div className='progressPosition' style={{marginLeft: "calc(" + progressPercentage.toString() + "% - 7px)" } } ></div>
-          <div className="controls">
-            {!isPlaying && <PlayBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PlayBtnFill>}
-            {isPlaying && <PauseBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PauseBtnFill>}
-            {videoRef.current && isMuted && <VolumeMuteFill onClick={toggleMute} className="col-sm control-element"></VolumeMuteFill>}
-            {videoRef.current && !isMuted && volume > 0.5 && <VolumeUpFill onClick={toggleMute} className="col-sm control-element"></VolumeUpFill>}
-            {videoRef.current && !isMuted && 0 < volume && volume <= 0.5 && <VolumeDownFill onClick={toggleMute} className="col-sm control-element"></VolumeDownFill>}
-            {videoRef.current && !isMuted && volume < 0.1 && <VolumeOffFill onClick={toggleMute} className="col-sm control-element"></VolumeOffFill>}
-            {videoRef.current && (formatStringAsTime(currentTime) + "/" + formatStringAsTime(videoRef.current.duration))}
-            {/* {!isFullScreen && <Pip onClick={toggleMini}></Pip>} */}
-            <div className='infinite-middle'></div>
-            {!willLoop && <Repeat onClick={toggleLoop}></Repeat>}
-            {willLoop && <Repeat onClick={toggleLoop} style={{backgroundColor: "white"}}></Repeat>}
-            {!isFullScreen && <Film onClick={toggleTheater}></Film>}
-            {!isFullScreen && <Fullscreen onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></Fullscreen>}
-            {isFullScreen && <FullscreenExit onClick={toggleFullScreen} style={{float:"right", marginRight:"10px"}}></FullscreenExit>}
-          </div>
+          {videoRef.current && getControls()}
         </div>
       </div>
     </FullScreenPanel>

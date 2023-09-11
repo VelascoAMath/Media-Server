@@ -67,7 +67,7 @@ video {
   left: 0;
   right: 0;
   z-index: 100;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 150ms ease-in-out;
 }
 
@@ -156,4 +156,24 @@ video {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.volume-container {
+  display: flex;
+  align-items: center;
+}
+
+.volume-slider {
+  width: 0px;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: width 150ms ease-in-out, transform 150ms ease-in-out;
+}
+
+.volume-container:hover .volume-slider,
+.volume-slider:focus-within {
+  width: 100px;
+  transform: scaleX(1);
+  background-color: purple;
+  transition: width 150ms ease-in-out, transform 150ms ease-in-out;
 }
