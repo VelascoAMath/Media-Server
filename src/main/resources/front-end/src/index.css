@@ -67,7 +67,7 @@ video {
   left: 0;
   right: 0;
   z-index: 100;
-  opacity: 1;
+  opacity: 0;
   transition: opacity 150ms ease-in-out;
 }
 
@@ -170,8 +170,7 @@ code {
   transition: width 150ms ease-in-out, transform 150ms ease-in-out;
 }
 
-.volume-container:hover .volume-slider,
-.volume-slider:focus-within {
+.volume-container:hover .volume-slider {
   width: 100px;
   transform: scaleX(1);
   background-color: purple;

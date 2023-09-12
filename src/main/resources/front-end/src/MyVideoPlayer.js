@@ -4,6 +4,7 @@ import { Film, Fullscreen, FullscreenExit, PauseBtnFill, Pip, PlayBtnFill, Repea
 import { sprintf } from 'sprintf-js';
 import { useFullScreenHandle } from "react-full-screen";
 import { FullScreen as FullScreenPanel } from "react-full-screen";
+import RangeSlider from 'react-bootstrap-range-slider';
 
 
 export default function MyVideoPlayer() {
@@ -18,6 +19,7 @@ export default function MyVideoPlayer() {
   const [volume, setVolume] = useState(1);
   const [willLoop, setWillLoop] = useState(false);
   const videoRef = useRef(null);
+  const volumeSliderRef = useRef(null);
   const controlRef = useRef(null);
   let progressPercentage = 0;
   const handle = useFullScreenHandle();
@@ -62,7 +64,6 @@ export default function MyVideoPlayer() {
     } else if (event.code == 'Digit0'){
       videoRef.current.currentTime = 0.0 * videoRef.current.duration;
     } else if (event.code == 'ArrowUp') {
-      console.log(videoRef.current.volume);
       if(videoRef.current.volume + 0.1 > 1){
         videoRef.current.volume = 0.9;
       }
@@ -70,7 +71,6 @@ export default function MyVideoPlayer() {
       setVolume(videoRef.current.volume);
     }
     else if (event.code == 'ArrowDown') {
-      console.log(videoRef.current.volume);
       if(videoRef.current.volume - 0.1 < 0){
         videoRef.current.volume = 0.1;
       }
@@ -155,6 +155,11 @@ export default function MyVideoPlayer() {
     videoRef.current.addEventListener("timeupdate", (event) => {setCurrentTime(videoRef.current.currentTime)} )
     progressPercentage = currentTime / videoRef.current.duration * 100;
   }
+
+  if(volumeSliderRef.current){
+    volumeSliderRef.current.addEventListener("update", (e) => {console.log(e)})
+  }
+
   const getControls = function(){
     return <div className="controls">
       {!isPlaying && <PlayBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PlayBtnFill>}
@@ -164,7 +169,7 @@ export default function MyVideoPlayer() {
         {!isMuted && volume > 0.5 && <VolumeUpFill onClick={toggleMute} className="col-sm control-element"></VolumeUpFill>}
         {!isMuted && 0.1 < volume && volume <= 0.5 && <VolumeDownFill onClick={toggleMute} className="col-sm control-element"></VolumeDownFill>}
         {!isMuted && volume < 0.1 && <VolumeOffFill onClick={toggleMute} className="col-sm control-element"></VolumeOffFill>}
-        {<input type="range" min="0" max="1" step="0.01" className='volume-slider'></input>}
+        {<RangeSlider type="range" min="0" max="1" step="0.01" value={isMuted? 0: volume} onChange={(e)=>{ videoRef.current.volume = e.target.value; setVolume(e.target.value)}} tooltip='off' ref={volumeSliderRef} className='volume-slider'></RangeSlider>}
       </div>
       {formatStringAsTime(currentTime) + "/" + formatStringAsTime(videoRef.current.duration)}
       {/* {!isFullScreen && <Pip onClick={toggleMini}></Pip>} */}
