@@ -19,7 +19,6 @@ export default function MyVideoPlayer() {
   const [volume, setVolume] = useState(1);
   const [willLoop, setWillLoop] = useState(false);
   const videoRef = useRef(null);
-  const volumeSliderRef = useRef(null);
   const controlRef = useRef(null);
   let progressPercentage = 0;
   const handle = useFullScreenHandle();
@@ -156,20 +155,18 @@ export default function MyVideoPlayer() {
     progressPercentage = currentTime / videoRef.current.duration * 100;
   }
 
-  if(volumeSliderRef.current){
-    volumeSliderRef.current.addEventListener("update", (e) => {console.log(e)})
-  }
+  
 
   const getControls = function(){
     return <div className="controls">
       {!isPlaying && <PlayBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PlayBtnFill>}
       {isPlaying && <PauseBtnFill onClick={togglePlay} className="play-pause-btn col-sm"></PauseBtnFill>}
-      <div className="volume-container" onMouseOver={() => {console.log("OVER")}}>
+      <div className="volume-container">
         {isMuted && <VolumeMuteFill onClick={toggleMute} className="col-sm control-element"></VolumeMuteFill>}
         {!isMuted && volume > 0.5 && <VolumeUpFill onClick={toggleMute} className="col-sm control-element"></VolumeUpFill>}
         {!isMuted && 0.1 < volume && volume <= 0.5 && <VolumeDownFill onClick={toggleMute} className="col-sm control-element"></VolumeDownFill>}
         {!isMuted && volume < 0.1 && <VolumeOffFill onClick={toggleMute} className="col-sm control-element"></VolumeOffFill>}
-        {<RangeSlider type="range" min="0" max="1" step="0.01" value={isMuted? 0: volume} onChange={(e)=>{ videoRef.current.volume = e.target.value; setVolume(e.target.value)}} tooltip='off' ref={volumeSliderRef} className='volume-slider'></RangeSlider>}
+        {<RangeSlider type="range" min="0" max="1" step="0.01" value={isMuted? 0: volume} onChange={(e)=>{ videoRef.current.volume = e.target.value; setVolume(e.target.value)}} tooltip='off' className='volume-slider'></RangeSlider>}
       </div>
       {formatStringAsTime(currentTime) + "/" + formatStringAsTime(videoRef.current.duration)}
       {/* {!isFullScreen && <Pip onClick={toggleMini}></Pip>} */}
