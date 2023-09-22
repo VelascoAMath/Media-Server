@@ -43,25 +43,35 @@ export default function MyVideoPlayer() {
       videoRef.current.currentTime = Math.max(videoRef.current.currentTime, 0);
       console.log(videoRef.current.currentTime);
     } else if (event.code == 'Digit1'){
-      videoRef.current.currentTime = 0.1 * videoRef.current.duration;
+        setCurrentTime(0.1 * videoRef.current.duration);
+        videoRef.current.currentTime = 0.1 * videoRef.current.duration;
     } else if (event.code == 'Digit2'){
-      videoRef.current.currentTime = 0.2 * videoRef.current.duration;
+        setCurrentTime(0.2 * videoRef.current.duration);
+        videoRef.current.currentTime = 0.2 * videoRef.current.duration;
     } else if (event.code == 'Digit3'){
-      videoRef.current.currentTime = 0.3 * videoRef.current.duration;
+        setCurrentTime(0.3 * videoRef.current.duration);
+        videoRef.current.currentTime = 0.3 * videoRef.current.duration;
     } else if (event.code == 'Digit4'){
-      videoRef.current.currentTime = 0.4 * videoRef.current.duration;
+        setCurrentTime(0.4 * videoRef.current.duration);
+        videoRef.current.currentTime = 0.4 * videoRef.current.duration;
     } else if (event.code == 'Digit5'){
-      videoRef.current.currentTime = 0.5 * videoRef.current.duration;
+        setCurrentTime(0.5 * videoRef.current.duration);
+        videoRef.current.currentTime = 0.5 * videoRef.current.duration;
     } else if (event.code == 'Digit6'){
-      videoRef.current.currentTime = 0.6 * videoRef.current.duration;
+        setCurrentTime(0.6 * videoRef.current.duration);
+        videoRef.current.currentTime = 0.6 * videoRef.current.duration;
     } else if (event.code == 'Digit7'){
-      videoRef.current.currentTime = 0.7 * videoRef.current.duration;
+        setCurrentTime(0.7 * videoRef.current.duration);
+        videoRef.current.currentTime = 0.7 * videoRef.current.duration;
     } else if (event.code == 'Digit8'){
-      videoRef.current.currentTime = 0.8 * videoRef.current.duration;
+        setCurrentTime(0.8 * videoRef.current.duration);
+        videoRef.current.currentTime = 0.8 * videoRef.current.duration;
     } else if (event.code == 'Digit9'){
-      videoRef.current.currentTime = 0.9 * videoRef.current.duration;
+        setCurrentTime(0.9 * videoRef.current.duration);
+        videoRef.current.currentTime = 0.9 * videoRef.current.duration;
     } else if (event.code == 'Digit0'){
-      videoRef.current.currentTime = 0.0 * videoRef.current.duration;
+        setCurrentTime(0.0 * videoRef.current.duration);
+        videoRef.current.currentTime = 0.0 * videoRef.current.duration;
     } else if (event.code == 'ArrowUp') {
       if(videoRef.current.volume + 0.1 > 1){
         videoRef.current.volume = 0.9;
